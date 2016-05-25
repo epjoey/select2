@@ -185,6 +185,14 @@ define([
       css.top = container.top - parentOffset.top - dropdown.height;
     }
 
+    // The edge of absolute containers is stretched by overflowing children.
+    // Positioning off of container needs to account for scroll.
+    var parentCssPosition = $offsetParent.css('position');
+    if (parentCssPosition === 'fixed' || parentCssPosition === 'absolute') {
+      css.top += $offsetParent.scrollTop();
+      css.left += $offsetParent.scrollLeft();
+    }
+
     if (newDirection != null) {
       this.$dropdown
         .removeClass('select2-dropdown--below select2-dropdown--above')
